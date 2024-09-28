@@ -5,7 +5,6 @@ import MyModal from "../Modal/Modal";
 import MyInput from "../MyInput/MyInput";
 
 export default function Header({ title, buttonText, isSearched, isAdd }) {
-export default function Header({title, buttonText}) {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {

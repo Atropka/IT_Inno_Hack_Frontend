@@ -14,7 +14,7 @@ const ProjectTasks = ({}) => {
 
 
     useEffect(() => {
-        fetch('https://6751ed9c006626.lhr.life/v1/projects/H%26h/tasks')
+        fetch('https://a69e816f684673.lhr.life/v1/projects/H%26h/tasks')
             .then((response) => response.json())
             .then((json) => {
                 setTasks(json.data)
