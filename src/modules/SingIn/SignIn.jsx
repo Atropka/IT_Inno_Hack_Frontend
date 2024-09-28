@@ -47,9 +47,9 @@ function SignIn() {  return (
                 <input type="checkbox" className="mr-2" />
                 Remember me
               </label>
-              <a href="#" className="text-sm text-blue-500 hover:underline">
+              {/* <a href="#" className="text-sm text-blue-500 hover:underline">
                 Forgot Password?
-              </a>
+              </a> */}
             </div>
             <button
               type="submit"

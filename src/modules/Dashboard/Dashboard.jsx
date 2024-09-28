@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Sidebar from '../Sidebar/Sidebar';
-import DashboardHeader from '../DashboardHeader/DashBoardHeader';
 import Header from "../Header/Header";
 import '../Projects/Projects.scss'
 
@@ -116,8 +115,10 @@ const Dashboard = () => {
     <DndProvider backend={HTML5Backend}>
       <div className="flex h-screen bg-gray-100">
         <Sidebar />
-        <div className="flex-1 p-10">
-          <DashboardHeader />
+        <div className='content'>  
+          <Header title="Dashboard" buttonText="Add Task"/>
+        <div className="flex-1">
+
           <div className="grid grid-cols-4 gap-6">
             {data.columnOrder.map((columnId) => {
               const column = data.columns[columnId];
@@ -134,6 +135,7 @@ const Dashboard = () => {
             })}
           </div>
         </div>
+      </div>
       </div>
     </DndProvider>
   );

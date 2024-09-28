@@ -1,5 +1,6 @@
 import React from 'react';
 import './Projects.scss'
+import { FiPlus } from 'react-icons/fi';
 
 import EventCard from "../EventCard/EventCard";
 import Sidebar from "../Sidebar/Sidebar";
@@ -10,12 +11,8 @@ const Projects = () => {
         <div className="dashboard">
             <Sidebar/>
             <div className="content">
-                <Header/>
+                <Header title="Projects" buttonText="Add Project"/>
                 <section className="nearest-events">
-                    <div className="header">
-                        <h2>Projects</h2>
-                        <button className="add-event">+ Add Event</button>
-                    </div>
                     <div className="events-list">
                         <EventCard
                             title="Presentation of the new department"
