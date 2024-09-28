@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Sidebar from '../Sidebar/Sidebar';
 import Header from "../Header/Header";
 import '../Projects/Projects.scss'
+import axios from 'axios';
+
+
 
 const initialData = {
   tasks: {
@@ -13,8 +16,8 @@ const initialData = {
   },
   columns: {
     'column-1': {
-      id: 'column-1',
-      title: 'To Do',
+      id: 'open',
+      title: 'Open',
       taskIds: ['task-1', 'task-2'],
     },
     'column-2': {
@@ -73,6 +76,20 @@ const Column = ({ column, tasks, moveTask }) => {
 
 const Dashboard = () => {
   const [data, setData] = useState(initialData);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get('https://69fbdebe0a2299.lhr.life/v1/projects/H%26h/tasks');
+        const tasks = response.data.tasks;
+        console.log(tasks);
+      } catch (error) {
+        console.error('Ошибка при загрузке задач:', error);
+      }
+    };
+
+    fetchTasks();
+  }, []);
 
   const moveTask = (taskId, destinationColumnId) => {
     const task = data.tasks[taskId];
