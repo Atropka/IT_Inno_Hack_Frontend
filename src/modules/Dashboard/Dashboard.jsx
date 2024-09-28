@@ -1,9 +1,8 @@
-// src/pages/ProjectsBoard.js
 import React, { useState } from 'react';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import Sidebar from '../Sidebar/Sidebar';
-import TaskCard from '../TaskCard/TaskCard';
-import DashboardHeaader from '../DashboardHeader/DashBoardHeader';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import DashboardHeader from '../DashboardHeader/DashBoardHeader';
 
 // Пример задач для каждой колонки
 const initialData = {
@@ -34,131 +33,117 @@ const initialData = {
       taskIds: [],
     },
   },
-  // Список колонок по порядку
   columnOrder: ['column-1', 'column-2', 'column-3', 'column-4'],
+};
+
+// Определяем типы для Drag & Drop
+const ItemTypes = {
+  TASK: 'task',
+};
+
+// Компонент задачи
+const TaskCard = ({ task, index }) => {
+  const [, ref] = useDrag({
+    type: ItemTypes.TASK,
+    item: { id: task.id, index },
+  });
+
+  return (
+    <div ref={ref} className="bg-white p-4 rounded-lg shadow mb-2">
+      <h4>{task.title}</h4>
+      <p>{task.time}</p>
+    </div>
+  );
+};
+
+// Компонент колонки
+const Column = ({ column, tasks, moveTask }) => {
+  const [, drop] = useDrop({
+    accept: ItemTypes.TASK,
+    drop: (item) => moveTask(item.id, column.id),
+  });
+
+  return (
+    <div ref={drop} className="bg-gray-200 p-4 rounded-lg min-h-[400px]">
+      <h2 className="text-xl font-semibold mb-4">{column.title}</h2>
+      {tasks.map((task, index) => (
+        <TaskCard key={task.id} task={task} index={index} />
+      ))}
+    </div>
+  );
 };
 
 const ProjectsBoard = () => {
   const [data, setData] = useState(initialData);
 
-  // Функция обработки перемещения задачи
-  const onDragEnd = (result) => {
-    const { destination, source, draggableId } = result;
+  const moveTask = (taskId, destinationColumnId) => {
+    // Находим задачу
+    const task = data.tasks[taskId];
 
-    if (!destination) return;
-
-    // Если задача перемещена в ту же позицию
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
+    // Если задача не найдена, выходим из функции
+    if (!task) {
+      console.error('Task not found:', taskId);
       return;
     }
 
-    // Получаем колонку, из которой была перемещена задача
-    const startColumn = data.columns[source.droppableId];
-    // Получаем колонку, в которую задача перемещается
-    const finishColumn = data.columns[destination.droppableId];
+    // Найдем колонку, где находится задача
+    const sourceColumnId = Object.keys(data.columns).find((columnId) =>
+      data.columns[columnId].taskIds.includes(taskId)
+    );
 
-    // Если перемещение внутри одной колонки
-    if (startColumn === finishColumn) {
-      const newTaskIds = Array.from(startColumn.taskIds);
-      newTaskIds.splice(source.index, 1); // Удаляем задачу из исходной позиции
-      newTaskIds.splice(destination.index, 0, draggableId); // Вставляем задачу на новую позицию
-
-      const newColumn = {
-        ...startColumn,
-        taskIds: newTaskIds,
-      };
-
-      setData({
-        ...data,
-        columns: {
-          ...data.columns,
-          [newColumn.id]: newColumn,
-        },
-      });
+    // Проверяем, существует ли исходная и целевая колонки
+    if (!sourceColumnId || !destinationColumnId) {
+      console.error('Source or destination column not found:', sourceColumnId, destinationColumnId);
       return;
     }
 
-    // Перемещение задачи между разными колонками
-    const startTaskIds = Array.from(startColumn.taskIds);
-    startTaskIds.splice(source.index, 1);
-    const newStartColumn = {
-      ...startColumn,
-      taskIds: startTaskIds,
+    const sourceColumn = data.columns[sourceColumnId];
+    const destinationColumn = data.columns[destinationColumnId];
+
+    // Если задача перемещается в ту же колонку, ничего не делаем
+    if (sourceColumnId === destinationColumnId) {
+      return;
+    }
+
+    // Удаляем задачу из исходной колонки
+    const newSourceTaskIds = sourceColumn.taskIds.filter((id) => id !== taskId);
+
+    // Добавляем задачу в целевую колонку
+    const newDestinationTaskIds = [...destinationColumn.taskIds, taskId];
+
+    const newColumns = {
+      ...data.columns,
+      [sourceColumnId]: { ...sourceColumn, taskIds: newSourceTaskIds },
+      [destinationColumnId]: { ...destinationColumn, taskIds: newDestinationTaskIds },
     };
 
-    const finishTaskIds = Array.from(finishColumn.taskIds);
-    finishTaskIds.splice(destination.index, 0, draggableId);
-    const newFinishColumn = {
-      ...finishColumn,
-      taskIds: finishTaskIds,
-    };
-
-    setData({
-      ...data,
-      columns: {
-        ...data.columns,
-        [newStartColumn.id]: newStartColumn,
-        [newFinishColumn.id]: newFinishColumn,
-      },
-    });
+    setData({ ...data, columns: newColumns });
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
-      <Sidebar />
-
-      {/* Main content */}
-      <div className="flex-1 p-10">
-        <DashboardHeaader />
-
-        {/* DragDropContext оборачивает весь контент, который будет поддерживать перетаскивание */}
-        <DragDropContext onDragEnd={onDragEnd}>
+    <DndProvider backend={HTML5Backend}>
+      <div className="flex h-screen bg-gray-100">
+        <Sidebar />
+        <div className="flex-1 p-10">
+          <DashboardHeader />
           <div className="grid grid-cols-4 gap-6">
             {data.columnOrder.map((columnId) => {
               const column = data.columns[columnId];
               const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
 
               return (
-                <div key={column.id}>
-                  <h2 className="text-xl font-semibold mb-4">{column.title}</h2>
-                  {/* Droppable – область, куда можно перетаскивать задачи */}
-                  <Droppable droppableId={column.id}>
-                    {(provided) => (
-                      <div
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                        className="bg-gray-200 p-4 rounded-lg min-h-[400px]"
-                      >
-                        {tasks.map((task, index) => (
-                       
-                          <Draggable key={task.id} draggableId={task.id} index={index}>
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                className="mb-4"
-                              >
-                                <TaskCard title={task.title} time={task.time} users={task.users} />
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                </div>
+                <Column
+                  key={column.id}
+                  column={column}
+                  tasks={tasks}
+                  moveTask={moveTask}
+                />
               );
             })}
           </div>
-        </DragDropContext>
+        </div>
       </div>
-    </div>
+    </DndProvider>
   );
 };
 
