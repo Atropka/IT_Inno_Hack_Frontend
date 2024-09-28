@@ -3,18 +3,13 @@ import './Projects.scss'
 
 import EventCard from "../EventCard/EventCard";
 import Sidebar from "../Sidebar/Sidebar";
-
+import Header from '../Header/Header';
 const Projects = () => {
     return (
         <div className="dashboard">
             <Sidebar/>
             <main className="content">
-                <div className="top-bar">
-                    <div className="user-info">
-                        <span>Evan Yates</span>
-                        <img src="profile_icon.png" alt="Profile"/>
-                    </div>
-                </div>
+               <Header/>
 
                 <section className="nearest-events">
                     <div className="header">
