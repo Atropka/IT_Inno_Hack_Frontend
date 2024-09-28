@@ -4,6 +4,7 @@ import {FiSearch, FiPlus} from 'react-icons/fi';
 import MyModal from "../Modal/Modal";
 import MyInput from "../MyInput/MyInput";
 
+export default function Header({ title, buttonText, isSearched, isAdd }) {
 export default function Header({title, buttonText}) {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,30 +35,26 @@ export default function Header({title, buttonText}) {
                 <div>
                     <h1 className="text-3xl font-bold text-gray-800">{title}</h1>
                 </div>
-                <div className="flex items-center space-x-4">
-                    <div className="relative">
-                        <MyInput
-                            type="text"
-                            placeholder="Search"
-                            className="border rounded-lg p-2 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                        <FiSearch className="absolute left-2 top-2 text-gray-400"/>
-                    </div>
-                    <button onClick={showModal} className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center hover:bg-blue-600">
-                        <FiPlus className="mr-2"/>
-                        {buttonText}
-                    </button>
-                    <MyModal title='Add Task'
-                             open={isModalOpen}
-                             onOk={handleOk}
-                             onCancel={handleCancel}
-                             inputPlaceholder='title'
-                             areaPlaceholder='description'
-                             datePicker={true}
-                             select={true}
+            <div className="flex items-center space-x-4">
+                <div className="relative">
+                    {isSearched ? <div>
+                        <input
+                        type="text"
+                        placeholder="Search"
+                        className="border rounded-lg p-2 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
+                    <FiSearch className="absolute left-2 top-2 text-gray-400" />
+                    </div> : null}
                 </div>
-            </div>
+                { isAdd ?
+                <div>
+                    <button className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center hover:bg-blue-600">
+                    <FiPlus className="mr-2" />    {buttonText}
+                    </button>
+                    </div> : null
+                    }
         </div>
+    </div>
+    </div>
     );
 }

@@ -36,7 +36,7 @@ const Projects = () => {
         <div className="dashboard">
             <Sidebar/>
             <div className="content">
-                <Header title="Projects" buttonText="Add Project"/>
+                <Header title="Projects" buttonText="Add Project" isAdd={true} isSearched={true}/>
                 <section className="nearest-events">
                     <div className="events-list">
                         {projects.length ?
