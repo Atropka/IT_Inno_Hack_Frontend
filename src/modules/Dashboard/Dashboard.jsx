@@ -16,7 +16,7 @@ const initialData = {
   },
   columns: {
     'column-1': {
-      id: 'open',
+      id: 'column-1',
       title: 'Open',
       taskIds: ['task-1', 'task-2'],
     },
@@ -88,7 +88,7 @@ const Dashboard = () => {
       }
     };
 
-    fetchTasks();
+    fetchTasks()
   }, []);
 
   const moveTask = (taskId, destinationColumnId) => {

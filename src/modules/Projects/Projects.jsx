@@ -1,6 +1,5 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import './Projects.scss'
-import { FiPlus } from 'react-icons/fi';
 
 import ProjectCard from "../ProjectCard/ProjectCard";
 import Sidebar from "../Sidebar/Sidebar";
@@ -11,11 +10,25 @@ const Projects = () => {
 
     const navigate = useNavigate()
 
-    const projectDetails  = (id) => {
+    const [projects, setProjects] = useState([])
+
+    const onClickProjectDetails  = (id) => {
         navigate(`/project/${id}`)
     }
 
 
+
+
+    useEffect(() => {
+        fetch('https://6751ed9c006626.lhr.life/v1/projects')
+            .then((response) => response.json())
+            .then((json) =>{
+                setProjects(json.data)
+            })
+            .catch((err) => console.log(err));
+    }, [])
+
+    console.log(projects)
 
 
 
@@ -26,54 +39,21 @@ const Projects = () => {
                 <Header title="Projects" buttonText="Add Project"/>
                 <section className="nearest-events">
                     <div className="events-list">
-                        <ProjectCard
-                            title="Presentation of the new department"
-                            time="Today | 6:00 PM"
-                            duration="4h"
-                            status="up"
-                        />
-                        <ProjectCard
-                            title="Anna's Birthday"
-                            time="Today | 5:00 PM"
-                            duration="2h"
-                            status="down"
-                        />
-                        <ProjectCard
-                            title="Meeting with Development Team"
-                            time="Tomorrow | 5:00 PM"
-                            duration="4h"
-                            status="up"
-                        />
-                        <ProjectCard
-                            title="Ray's Birthday"
-                            time="Tomorrow | 2:00 PM"
-                            duration="1h 30m"
-                            status="down"
-                        />
-                        <ProjectCard
-                            title="Meeting with CEO"
-                            time="Sep 14 | 5:00 PM"
-                            duration="1h"
-                            status="up"
-                        />
-                        <ProjectCard
-                            title="Movie night (Tenet)"
-                            time="Sep 15 | 5:00 PM"
-                            duration="3h"
-                            status="down"
-                        />
-                        <ProjectCard
-                            title="Lucas's Birthday"
-                            time="Sep 29 | 5:30 PM"
-                            duration="2h"
-                            status="down"
-                        />
-                        <ProjectCard
-                            title="Meeting with CTO"
-                            time="Sep 30 | 12:00 PM"
-                            duration="1h"
-                            status="up"
-                        />
+                        {projects.length ?
+                            projects.map((obj, index) => (
+                                <ProjectCard
+                                    {...obj}
+                                    onClickProjectDetails={onClickProjectDetails}
+                                />
+                            )) :
+                            'Projects is empty'
+                        }
+                        {/*<ProjectCard*/}
+                        {/*    title="Meeting with CTO"*/}
+                        {/*    time="Sep 30 | 12:00 PM"*/}
+                        {/*    duration="1h"*/}
+                        {/*    status="up"*/}
+                        {/*/>*/}
                     </div>
                 </section>
             </div>
