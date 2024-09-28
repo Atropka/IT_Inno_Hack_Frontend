@@ -16,7 +16,7 @@ const initialData = {
   },
   columns: {
     'column-1': {
-      id: 'open',
+      id: 'column-1',
       title: 'Open',
       taskIds: ['task-1', 'task-2'],
     },
@@ -133,7 +133,7 @@ const Dashboard = () => {
       <div className="flex h-screen bg-gray-100">
         <Sidebar />
         <div className='content'>  
-          <Header title="Dashboard" buttonText="Add Task"/>
+          <Header title="Dashboard" buttonText="Add Task" isSearched={false} isAdd={true}/>
         <div className="flex-1">
 
           <div className="grid grid-cols-4 gap-6">

@@ -41,7 +41,7 @@ const Sidebar = () => {
           </li>
         </ul>
         <div className="absolute bottom-0 left-0 w-full p-6">
-          <a href="/" className="flex items-center text-gray-700 hover:text-red-500">
+          <a href="/" className="flex items-center text-gray-700 hover:text-red-500 pl-6">
             <FiLogOut className="mr-3" />
             Logout
           </a>

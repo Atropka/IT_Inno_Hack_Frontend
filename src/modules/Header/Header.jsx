@@ -3,7 +3,7 @@ import {GrNotification} from "react-icons/gr";
 import { FiSearch, FiPlus } from 'react-icons/fi';
 
 
-export default function Header({ title, buttonText }) {
+export default function Header({ title, buttonText, isSearched, isAdd }) {
     return (
         <div>
         <div className="top-bar ">
@@ -22,17 +22,22 @@ export default function Header({ title, buttonText }) {
                 </div>
             <div className="flex items-center space-x-4">
                 <div className="relative">
-                    <input
+                    {isSearched ? <div>
+                        <input 
                         type="text"
                         placeholder="Search"
                         className="border rounded-lg p-2 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     <FiSearch className="absolute left-2 top-2 text-gray-400" />
+                    </div> : null}
                 </div>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center hover:bg-blue-600">
-            <FiPlus className="mr-2" />
-           {buttonText}
-          </button>
+                { isAdd ? 
+                <div>
+                    <button className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center hover:bg-blue-600">        
+                    <FiPlus className="mr-2" />    {buttonText}
+                    </button>
+                    </div> : null
+                    }
         </div>
     </div>
     </div>
