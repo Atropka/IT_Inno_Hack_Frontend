@@ -1,9 +1,9 @@
 import React from 'react';
-import './EventCard.scss'
+import './ProjectCard.scss'
 
-const EventCard = ({ title, time, duration, status }) => {
+const ProjectCard = ({ title, time, duration, status }) => {
     return (
-        <div className={`event-card ${status}`}>
+        <div className={`project-card ${status}`}>
             <div className="event-info">
                 <h3>{title}</h3>
                 <p>{time}</p>
@@ -16,4 +16,4 @@ const EventCard = ({ title, time, duration, status }) => {
     );
 };
 
-export default EventCard;
+export default ProjectCard;

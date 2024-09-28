@@ -4,6 +4,7 @@ import SignUp from './modules/SignUp/SignUp';
 import Projects from './modules/Projects/Projects';
 import Dashboard from "./modules/Dashboard/Dashboard";
 import Profile from "./modules/Profile/Profile";
+import ProjectTasks from "./modules/ProjectTasks/ProjectTasks";
 
 function App() {
   return ( 
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<SignIn />} />
         <Route path="/register" element={<SignUp />} />
         <Route path="/projects" element={<Projects />} />
+          <Route path='/project' element={<ProjectTasks/>}/>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
