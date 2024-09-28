@@ -1,12 +1,11 @@
-// src/components/ProjectsHeader.js
 import React from 'react';
 import { FiSearch, FiPlus } from 'react-icons/fi';
 
 const DashboardHeader = () => {
   return (
-    <div className="flex justify-between items-center mb-6">
+    <div className="flex justify-between items-center mb-6 mt-5">
       <div>
-        <h1 className="text-3xl font-bold text-gray-800">Projects</h1>
+        <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
       </div>
       <div className="flex items-center space-x-4">
         <div className="relative">

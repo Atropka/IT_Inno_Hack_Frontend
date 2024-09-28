@@ -4,13 +4,13 @@ import './Projects.scss'
 import EventCard from "../EventCard/EventCard";
 import Sidebar from "../Sidebar/Sidebar";
 import Header from '../Header/Header';
+
 const Projects = () => {
     return (
         <div className="dashboard">
             <Sidebar/>
-            <main className="content">
-               <Header/>
-
+            <div className="content">
+                <Header/>
                 <section className="nearest-events">
                     <div className="header">
                         <h2>Projects</h2>
@@ -67,7 +67,7 @@ const Projects = () => {
                         />
                     </div>
                 </section>
-            </main>
+            </div>
         </div>
     );
 };

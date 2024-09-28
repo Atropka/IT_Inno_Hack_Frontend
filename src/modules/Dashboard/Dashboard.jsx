@@ -3,8 +3,9 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Sidebar from '../Sidebar/Sidebar';
 import DashboardHeader from '../DashboardHeader/DashBoardHeader';
+import Header from "../Header/Header";
+import '../Projects/Projects.scss'
 
-// Пример задач для каждой колонки
 const initialData = {
   tasks: {
     'task-1': { id: 'task-1', title: 'UX sketches', time: '4d', users: ['https://via.placeholder.com/32'] },
@@ -36,12 +37,10 @@ const initialData = {
   columnOrder: ['column-1', 'column-2', 'column-3', 'column-4'],
 };
 
-// Определяем типы для Drag & Drop
 const ItemTypes = {
   TASK: 'task',
 };
 
-// Компонент задачи
 const TaskCard = ({ task, index }) => {
   const [, ref] = useDrag({
     type: ItemTypes.TASK,
@@ -56,7 +55,7 @@ const TaskCard = ({ task, index }) => {
   );
 };
 
-// Компонент колонки
+
 const Column = ({ column, tasks, moveTask }) => {
   const [, drop] = useDrop({
     accept: ItemTypes.TASK,
@@ -73,25 +72,21 @@ const Column = ({ column, tasks, moveTask }) => {
   );
 };
 
-const ProjectsBoard = () => {
+const Dashboard = () => {
   const [data, setData] = useState(initialData);
 
   const moveTask = (taskId, destinationColumnId) => {
-    // Находим задачу
     const task = data.tasks[taskId];
 
-    // Если задача не найдена, выходим из функции
     if (!task) {
       console.error('Task not found:', taskId);
       return;
     }
 
-    // Найдем колонку, где находится задача
     const sourceColumnId = Object.keys(data.columns).find((columnId) =>
       data.columns[columnId].taskIds.includes(taskId)
     );
 
-    // Проверяем, существует ли исходная и целевая колонки
     if (!sourceColumnId || !destinationColumnId) {
       console.error('Source or destination column not found:', sourceColumnId, destinationColumnId);
       return;
@@ -100,15 +95,12 @@ const ProjectsBoard = () => {
     const sourceColumn = data.columns[sourceColumnId];
     const destinationColumn = data.columns[destinationColumnId];
 
-    // Если задача перемещается в ту же колонку, ничего не делаем
     if (sourceColumnId === destinationColumnId) {
       return;
     }
 
-    // Удаляем задачу из исходной колонки
     const newSourceTaskIds = sourceColumn.taskIds.filter((id) => id !== taskId);
 
-    // Добавляем задачу в целевую колонку
     const newDestinationTaskIds = [...destinationColumn.taskIds, taskId];
 
     const newColumns = {
@@ -147,4 +139,4 @@ const ProjectsBoard = () => {
   );
 };
 
-export default ProjectsBoard;
+export default Dashboard;
